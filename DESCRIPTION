@@ -1,0 +1,10 @@
+Package: implicitExpansion
+Version: 0.0.1
+Title: Implicit Expansion
+Description: Implicit expansion of binary matrix vector operations
+Authors@R: c(person(
+        given = "Manuel",
+        family = "Hentschel",
+        role = c("aut", "cre")
+    ))
+License: MIT
