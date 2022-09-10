@@ -85,14 +85,14 @@ currently archived on <a href="ttps://CRAN.R-project.org/package=rray">CRAN</a>
     </div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p><code><a href="mmapply.html">mmapply</a></code>, <code><a href="binaryOperators.html">BinaryOperators</a></code>, <code><a href="expandArray.html">expandArray</a></code>, <code><a href="expandedDim.html">expandedDim</a></code>, <code><a href="ArrayCreation.html">ArrayCreation</a></code>, <code><a href="RowAndColumnVectors.html">RowAndColumnVectors</a></code></p></div>
+    <div class="dont-index"><p><code><a href="mmapply.html">mmapply</a></code>, <code><a href="BinaryOperators.html">BinaryOperators</a></code>, <code><a href="expandArray.html">expandArray</a></code>, <code><a href="expandedDim.html">expandedDim</a></code>, <code><a href="ArrayCreation.html">ArrayCreation</a></code>, <code><a href="RowAndColumnVectors.html">RowAndColumnVectors</a></code></p></div>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">x</span> <span class="op"><a href="binaryOperators.html">%m+%</a></span> <span class="va">y</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op"><a href="BinaryOperators.html">%m+%</a></span> <span class="va">y</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      [,1] [,2]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,]    5    6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2,]    6    7</span>
@@ -105,7 +105,7 @@ currently archived on <a href="ttps://CRAN.R-project.org/package=rray">CRAN</a>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">3</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">12</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">cm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">m</span> <span class="op"><a href="binaryOperators.html">%m-%</a></span> <span class="va">cm</span></span></span>
+<span class="r-in"><span><span class="va">m</span> <span class="op"><a href="BinaryOperators.html">%m-%</a></span> <span class="va">cm</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      [,1] [,2] [,3] [,4]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  -11  -29  -47  -65</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   -2   -2   -2   -2</span>
