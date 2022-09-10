@@ -1,0 +1,33 @@
+# Workspace config
+.Rproj.user
+.Rhistory
+.RData
+.lintr
+
+# Build config/artifacts
+src/*.so
+src/*.o
+*.dll
+src-i386/
+src-x64/
+
+# Temp files
+*.temp
+*.tmp
+tmp.*
+temp.*
+tmp
+temp
+
+# Docs
+docs
+inst/doc
+doc
+Meta
+vignettes/*.R
+vignettes/*.html
+
+# R CMD files
+*.Rcheck
+*.tar.gz
+implicitExpansion

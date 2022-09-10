@@ -1,0 +1,2 @@
+
+options(languageserver.diagnostics = FALSE)
