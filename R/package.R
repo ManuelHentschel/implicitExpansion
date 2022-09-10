@@ -28,7 +28,7 @@
 #' The package `rray` (
 #' [on GitHub](https://github.com/r-lib/rray),
 #' [documentation](https://rray.r-lib.org/),
-#' currently archived on [CRAN](ttps://CRAN.R-project.org/package=rray)
+#' currently archived on [CRAN](https://CRAN.R-project.org/package=rray)
 #' ) provides similar functionality as part of complete a remodeling of the array object.
 #' 
 #' @examples 
