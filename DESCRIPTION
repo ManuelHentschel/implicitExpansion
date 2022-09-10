@@ -6,7 +6,7 @@ Authors@R: c(person(
         given = "Manuel",
         family = "Hentschel",
         role = c("aut", "cre"),
-        email = "Manuel.Hentschel@unige.com"
+        email = "Manuel.Hentschel@unige.ch"
     ))
 License: MIT + file LICENSE
 URL: https://github.com/ManuelHentschel/implicitExpansion
