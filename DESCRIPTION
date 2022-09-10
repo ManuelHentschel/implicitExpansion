@@ -1,7 +1,11 @@
 Package: implicitExpansion
 Version: 0.0.1
 Title: Implicit Expansion
-Description: Implicit expansion of array operations.
+Description: Support for implicit expansion of arrays in operations involving
+    arrays of mismatched sizes. This pattern is known as "Broadcasting" in
+    Python and  "Implicit Expansion" in Matlab and is explained for example in
+    the article "Array programming with NumPy" by C. R. Harris et al.
+    <doi:10.1038/s41586-020-2649-2>.
 Authors@R: c(person(
         given = "Manuel",
         family = "Hentschel",
