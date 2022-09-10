@@ -33,7 +33,7 @@ to the full size of the output first, resulting in bad performance for very larg
 The package \code{rray} (
 \href{https://github.com/r-lib/rray}{on GitHub},
 \href{https://rray.r-lib.org/}{documentation},
-currently archived on \href{ttps://CRAN.R-project.org/package=rray}{CRAN}
+currently archived on \href{https://CRAN.R-project.org/package=rray}{CRAN}
 ) provides similar functionality as part of complete a remodeling of the array object.
 }
 \examples{
