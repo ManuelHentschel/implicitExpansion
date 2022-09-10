@@ -3,3 +3,5 @@
 ^implicitExpansion.*
 ^.Rprofile
 ^tests
+^_pkgdown.yml
+^README.md
