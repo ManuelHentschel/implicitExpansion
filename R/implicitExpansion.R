@@ -27,15 +27,21 @@
 #' [`expandArray`], [`expandedDim`]
 #' 
 #' @export
-mmapply <- function(FUN, ..., SIMPLIFY = TRUE, USE.NAMES = TRUE){
+mmapply <- function(FUN, ..., SIMPLIFY = TRUE, USE.NAMES = TRUE, ALLOW.RECYCLING = FALSE){
     FUN <- match.fun(FUN)
     arrays <- assertArrayList(...)
-    dy <- expandedDim(arrays = arrays)
+    dims <- lapply(arrays, dim)
+    dy <- getExpandedDim(dims=dims, allowRecycling = ALLOW.RECYCLING)
     dNames <- getExpandedDimnames(arrays, dy)
-    arrays <- lapply(arrays, expandArray, dy)
+    nd <- length(dy)
+    dims <- lapply(dims, padVector, nd, 1)
+    for(i in seq_along(arrays)){
+        dim(arrays[[i]]) <- dims[[i]]
+    }
     ret <- array(list(), dy)
     for(i in seq_len(prod(dy))){
-        args <- lapply(arrays, '[[', i)
+        ai <- linearToArrayIndex(i, dy)
+        args <- lapply(arrays, extractImpliedIndex, ai)
         ret[[i]] <- do.call(FUN, args)
     }
     if(SIMPLIFY){
@@ -45,6 +51,22 @@ mmapply <- function(FUN, ..., SIMPLIFY = TRUE, USE.NAMES = TRUE){
         dimnames(ret) <- dNames
     }
     return(ret)
+}
+
+
+linearToArrayIndex <- function(i, dx){
+    i0 <- i - 1
+    cp <- cumprod(c(1, dx[-length(dx)]))
+    ai0 <- i0 %/% cp %% dx
+    ai0 + 1
+}
+
+extractImpliedIndex <- function(arr, ind){
+    impInd <- 1 + ((ind - 1) %% dim(arr))
+    do.call('[[', c(list(arr), impInd))
+}
+getImpliedIndex <- function(dx, ind){
+    1 + ((ind - 1) %% dx)
 }
 
 #' Implied Dimension of a set of Arrays
@@ -72,14 +94,12 @@ mmapply <- function(FUN, ..., SIMPLIFY = TRUE, USE.NAMES = TRUE){
 #' [`expandArray`]
 #' 
 #' @export
-expandedDim <- function(..., arrays=list()){
+expandedDim <- function(..., arrays=list(), allowRecycling=FALSE){
     arrays <- assertArrayList(..., arrays = arrays)
     dims <- lapply(arrays, dim)
     len <- max(sapply(dims, length))
     dims <- lapply(dims, padVector, len)
-    getExpandedDim(dims=dims, doThrow = TRUE)
-    de <- numeric(len)
-    de <- do.call(pmax, dims)
+    de <- getExpandedDim(dims=dims, allowRecycling = allowRecycling)
     return(de)
 }
 
@@ -124,7 +144,7 @@ expandArray <- function(x, dy){
         dim(x) <- dy
         return(x)
     }
-    getExpandedDimDirectional(dx, dy, 'xy')
+    getExpandedDimDirectional(dx, dy)
 
     expandedDims <- (dx < dy)
     p0 <- order(expandedDims)
@@ -165,66 +185,81 @@ getExpandedDimnames <- function(arrays, de=NULL){
     return(dNames)
 }
 
-getExpandedDimDirectional <- function(dx, dy, direction = c('both', 'xy', 'yx')[1]){
+getExpandedDimDirectional <- function(dx, dy, allowRecycling=FALSE){
     len <- max(length(dx), length(dy))
     dx <- padVector(dx, len)
     dy <- padVector(dy, len)
-    dimsCompatible <- (dx == dy)
-    if(direction %in% c('both', 'xy')){
-        dimsCompatible <- dimsCompatible | (dx == 1)
+    if(allowRecycling){
+        dimsCompatible <- !(dx == 0 & dy != 0)
+    } else{
+        dimsCompatible <- (dx == dy) | (dx == 1)
     }
-    if(direction %in% c('both', 'yx')){
-        dimsCompatible <- dimsCompatible | (dy == 1)
-    }
-    mismatchedDims <- which(!dimsCompatible)
-    if(length(mismatchedDims) > 0){
+    if(any(!dimsCompatible)){
         stop(
             'Mismatching dimensions:',
-            paste0(mismatchedDims, collapse = ', ')
+            paste0(which(!dimsCompatible), collapse = ', ')
         )
     }
-    de <- dx
-    de[dy != 1] <- dy[dy != 1]
-    return(de)
+    return(dy)
 }
 
-getExpandedDim <- function(..., dims=list()){
+getExpandedDim <- function(..., dims=list(), allowRecycling=FALSE){
     dims <- c(list(...), dims)
     len <- max(sapply(dims, length))
     dims <- lapply(dims, padVector, len)
-    dy <- 1 + numeric(len)
+    dy <- rep(1, len)
     dimsCompatible <- !logical(len)
     for(i in seq_along(dims)){
         dx <- dims[[i]]
-        dimsCompatible <- dimsCompatible & (
-            dx == dy
-            | dx == 1
-            | dy == 1
-        )
-        mismatchedDims <- which(!dimsCompatible)
-        if(length(mismatchedDims) > 0){
-            stop(
-                'Mismatching dimensions for argument ',
-                i,
-                ': ',
-                paste0(mismatchedDims, collapse = ', ')
+        if(allowRecycling){
+            newInds <- (dy != 0 & dx > dy) | (dx == 0)
+        } else {
+            dimsCompatible <- dimsCompatible & (
+                dx == dy
+                | dx == 1
+                | dy == 1
             )
+            mismatchedDims <- which(!dimsCompatible)
+            if(length(mismatchedDims) > 0){
+                cat('===:\n')
+                print(dims)
+                cat('---:\n')
+                print(dx)
+                cat('---:\n')
+                print(dy)
+                cat('===:\n')
+                stop(
+                    'Mismatching dimensions for argument ',
+                    i,
+                    ': ',
+                    paste0(mismatchedDims, collapse = ', ')
+                )
+            }
+            newInds <- (dx != 1)
         }
-        newInds <- (dx != 1)
         dy[newInds] <- dx[newInds]
     }
     return(dy)
 }
 
 unlistArray <- function(arr){
+    # Check if array can be unlisted:
     isAllAtomic <- all(sapply(arr, function(x) {
         is.atomic(x) && length(x) == 1
     }))
     if(!isAllAtomic){
         return(arr)
     }
+    # Get dim and dim-names:
     dimNames <- dimnames(arr)
     dy <- dim(arr)
+    # Handle early if arr has a 0-dim:
+    if(length(arr) == 0){
+        arr <- array(NA, dim(arr))
+        dimnames(arr) <- dimNames
+        return(arr)
+    }
+    # Make unlisted array:
     arr <- unlist(arr, recursive = FALSE)
     dim(arr) <- dy
     dimnames(arr) <- dimNames
