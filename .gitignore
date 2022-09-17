@@ -3,6 +3,7 @@
 .Rhistory
 .RData
 .lintr
+.Rprofile
 
 # Build config/artifacts
 src/*.so

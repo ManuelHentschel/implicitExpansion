@@ -1,2 +1,0 @@
-
-options(languageserver.diagnostics = FALSE)
