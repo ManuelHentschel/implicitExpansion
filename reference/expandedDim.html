@@ -50,7 +50,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">expandedDim</span><span class="op">(</span><span class="va">...</span>, arrays <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">expandedDim</span><span class="op">(</span><span class="va">...</span>, arrays <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, allowRecycling <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -61,6 +61,10 @@
 
 <dt>arrays</dt>
 <dd><p>A list of objects that are coerced to arrays.</p></dd>
+
+
+<dt>allowRecycling</dt>
+<dd><p>Whether to allow recycling of elements in each dimension.</p></dd>
 
 </dl></div>
     <div id="value">

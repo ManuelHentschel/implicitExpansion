@@ -50,7 +50,14 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">mmapply</span><span class="op">(</span><span class="va">FUN</span>, <span class="va">...</span>, SIMPLIFY <span class="op">=</span> <span class="cn">TRUE</span>, USE.NAMES <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">mmapply</span><span class="op">(</span></span>
+<span>  <span class="va">FUN</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  MoreArgs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  SIMPLIFY <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  USE.NAMES <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  ALLOW.RECYCLING <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -63,12 +70,20 @@
 <dd><p>Objects that are coerced to arrays, expanded using implicit expansion, and then vectorized over.</p></dd>
 
 
+<dt>MoreArgs</dt>
+<dd><p>Pass arguments in a list instead of <code>...</code></p></dd>
+
+
 <dt>SIMPLIFY</dt>
 <dd><p>If <code>TRUE</code>, the resulting list array is simplified to an atomic array if possible.</p></dd>
 
 
 <dt>USE.NAMES</dt>
 <dd><p>If <code>TRUE</code>, the dimensions are named using the names of input arguments of matching size.</p></dd>
+
+
+<dt>ALLOW.RECYCLING</dt>
+<dd><p>Whether to allow recycling of elements in each dimension.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -79,11 +94,14 @@
     </div>
     <div id="details">
     <h2>Details</h2>
-    <p>The arguments are handled in a similar fashion to <code><a href="https://rdrr.io/r/base/mapply.html" class="external-link">mapply</a></code> with some key differences:</p><ul><li><p><code>MoreArgs</code> is omitted, since additional arguments can be passed in <code>...</code>, either as they are
+    <p>Most arguments are handled in a similar fashion to <code><a href="https://rdrr.io/r/base/mapply.html" class="external-link">mapply</a></code> with some key differences:</p><ul><li><p>Entries of <code>MoreArgs</code> are treated the same as the ones in <code>...</code>, i.e.
+<code>mmapply(...)</code> is the same as <code>mmapply(MoreArgs = list(...))</code>.
+Additional arguments to FUN can be passed here or in <code>...</code>, either as they are
 (if they are atomic), or as a <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code> of length one.</p></li>
 <li><p><code>SIMPLIFY</code> only simplifies a list array to an atomic array, nothing else.</p></li>
 <li><p><code>USE.NAMES</code> uses names from all arguments, but never uses an argument itself as names.</p></li>
-</ul></div>
+</ul><p>If <code>ALLOW.RECYCLING</code> is set to <code>TRUE</code>, all arrays of any size are compatible.</p>
+    </div>
     <div id="see-also">
     <h2>See also</h2>
     <div class="dont-index"><p><code><a href="expandArray.html">expandArray</a></code>, <code><a href="expandedDim.html">expandedDim</a></code></p></div>
