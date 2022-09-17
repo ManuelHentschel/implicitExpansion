@@ -5,17 +5,23 @@
 #' 
 #' @param FUN Function to apply to each combination of arguments. Found via [`match.fun`].
 #' @param ... Objects that are coerced to arrays, expanded using implicit expansion, and then vectorized over.
+#' @param MoreArgs Pass arguments in a list instead of `...`
 #' @param SIMPLIFY If `TRUE`, the resulting list array is simplified to an atomic array if possible.
 #' @param USE.NAMES If `TRUE`, the dimensions are named using the names of input arguments of matching size.
+#' @param ALLOW.RECYCLING Whether to allow recycling of elements in each dimension.
 #' 
 #' @return An array containing the result of `FUN` for each combination of entries from `...` after implicit expansion.
 #' 
 #' @details 
-#' The arguments are handled in a similar fashion to [`mapply`] with some key differences:
-#' - `MoreArgs` is omitted, since additional arguments can be passed in `...`, either as they are
+#' Most arguments are handled in a similar fashion to [`mapply`] with some key differences:
+#' - Entries of `MoreArgs` are treated the same as the ones in `...`, i.e.
+#' `mmapply(...)` is the same as `mmapply(MoreArgs = list(...))`.
+#' Additional arguments to FUN can be passed here or in `...`, either as they are
 #' (if they are atomic), or as a `list()` of length one.
 #' - `SIMPLIFY` only simplifies a list array to an atomic array, nothing else.
 #' - `USE.NAMES` uses names from all arguments, but never uses an argument itself as names.
+#' 
+#' If `ALLOW.RECYCLING` is set to `TRUE`, all arrays of any size are compatible.
 #' 
 #' @examples
 #' summaries <- list(Max = max, Min = min, avg = mean)
@@ -27,9 +33,10 @@
 #' [`expandArray`], [`expandedDim`]
 #' 
 #' @export
-mmapply <- function(FUN, ..., SIMPLIFY = TRUE, USE.NAMES = TRUE, ALLOW.RECYCLING = FALSE){
+mmapply <- function(FUN, ..., MoreArgs = list(), SIMPLIFY = TRUE, USE.NAMES = TRUE, ALLOW.RECYCLING = FALSE){
     FUN <- match.fun(FUN)
-    arrays <- assertArrayList(...)
+    arrays <- c(list(...), MoreArgs)
+    arrays <- assertArrayList(arrays = arrays)
     dims <- lapply(arrays, dim)
     dy <- getExpandedDim(dims=dims, allowRecycling = ALLOW.RECYCLING)
     dNames <- getExpandedDimnames(arrays, dy)
@@ -42,7 +49,7 @@ mmapply <- function(FUN, ..., SIMPLIFY = TRUE, USE.NAMES = TRUE, ALLOW.RECYCLING
     for(i in seq_len(prod(dy))){
         ai <- linearToArrayIndex(i, dy)
         args <- lapply(arrays, extractImpliedIndex, ai)
-        ret[[i]] <- do.call(FUN, args)
+        ret[i] <- list(do.call(FUN, args))
     }
     if(SIMPLIFY){
         ret <- unlistArray(ret)
@@ -76,6 +83,7 @@ getImpliedIndex <- function(dx, ind){
 #' 
 #' @param ... Objects that are coerced to arrays.
 #' @param arrays A list of objects that are coerced to arrays.
+#' @param allowRecycling Whether to allow recycling of elements in each dimension.
 #' 
 #' @return A numberical vector containing the expanded dimension implied by the arrays.
 #' 
@@ -122,38 +130,12 @@ expandedDim <- function(..., arrays=list(), allowRecycling=FALSE){
 #' expandArray(x, c(3,4))
 #' 
 #' @seealso 
-#' [`expandedDim`]
+#' [`expandedDim`], [`mmapply`]
 #' 
 #' @export
 expandArray <- function(x, dy){
-    x <- assertArray(x)
-    dx <- dim(x)
-
-    # Check args, return early:
-    if(identical(dx, dy)){
-        return(x)
-    }
-    if(length(dx) > length(dy)){
-        stop('Cannot expand x, since it has more dimensions than the target.')
-    }
-
-    dx <- padVector(dx, length(dy))
-
-    # Check args, return early:
-    if(identical(dx, dy)){
-        dim(x) <- dy
-        return(x)
-    }
-    getExpandedDimDirectional(dx, dy)
-
-    expandedDims <- (dx < dy)
-    p0 <- order(expandedDims)
-    p1 <- order(p0)
-
-    ret0 <- array(x, dy[p0])
-    ret <- aperm(ret0, p1)
-
-    return(ret)
+    y <- array(NA, dy)
+    mmapply(function(xx, yy) xx, x, y, SIMPLIFY = !is.list(x))
 }
 
 getExpandedDimnames <- function(arrays, de=NULL){
