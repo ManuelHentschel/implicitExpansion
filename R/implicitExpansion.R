@@ -46,8 +46,9 @@ mmapply <- function(FUN, ..., MoreArgs = list(), SIMPLIFY = TRUE, USE.NAMES = TR
         dim(arrays[[i]]) <- dims[[i]]
     }
     ret <- array(list(), dy)
+    cp <- cumprod(c(1, dy[-length(dy)]))
     for(i in seq_len(prod(dy))){
-        ai <- linearToArrayIndex(i, dy)
+        ai <- ((i - 1) %/% cp %% dy) + 1 # cf. `linearToArrayIndex()`
         args <- lapply(arrays, extractImpliedIndex, ai)
         ret[i] <- list(do.call(FUN, args))
     }
@@ -64,7 +65,7 @@ mmapply <- function(FUN, ..., MoreArgs = list(), SIMPLIFY = TRUE, USE.NAMES = TR
 linearToArrayIndex <- function(i, dx){
     i0 <- i - 1
     cp <- cumprod(c(1, dx[-length(dx)]))
-    ai0 <- i0 %/% cp %% dx
+    ai0 <- i0 %/% cp %% dx + 1
     ai0 + 1
 }
 
@@ -203,13 +204,6 @@ getExpandedDim <- function(..., dims=list(), allowRecycling=FALSE){
             )
             mismatchedDims <- which(!dimsCompatible)
             if(length(mismatchedDims) > 0){
-                cat('===:\n')
-                print(dims)
-                cat('---:\n')
-                print(dx)
-                cat('---:\n')
-                print(dy)
-                cat('===:\n')
                 stop(
                     'Mismatching dimensions for argument ',
                     i,
