@@ -1,5 +1,5 @@
 Package: implicitExpansion
-Version: 0.0.1
+Version: 0.1.0
 Title: Array Operations for Arrays of Mismatching Sizes
 Description: Support for implicit expansion of arrays in operations involving
     arrays of mismatching sizes. This pattern is known as "broadcasting" in
