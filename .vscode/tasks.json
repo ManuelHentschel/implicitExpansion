@@ -15,6 +15,15 @@
                 "kind": "build",
                 "isDefault": true
             }
+        },
+        {
+            "label": "Run tests",
+            "type": "shell",
+            "command": "R --silent -e testthat::test_local()",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            }
         }
     ]
 }
