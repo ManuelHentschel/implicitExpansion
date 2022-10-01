@@ -60,7 +60,19 @@ For instance, <code>x %m+% y</code> is equivalent to <code>mmapply('+', x, y)</c
 <span></span>
 <span><span class="va">x</span> <span class="op">%m*%</span> <span class="va">y</span></span>
 <span></span>
-<span><span class="va">x</span> <span class="op">%m/%</span> <span class="va">y</span></span></code></pre></div>
+<span><span class="va">x</span> <span class="op">%m/%</span> <span class="va">y</span></span>
+<span></span>
+<span><span class="va">x</span> <span class="op">%m==%</span> <span class="va">y</span></span>
+<span></span>
+<span><span class="va">x</span> <span class="op">%m!=%</span> <span class="va">y</span></span>
+<span></span>
+<span><span class="va">x</span> <span class="op">%m&gt;%</span> <span class="va">y</span></span>
+<span></span>
+<span><span class="va">x</span> <span class="op">%m&lt;%</span> <span class="va">y</span></span>
+<span></span>
+<span><span class="va">x</span> <span class="op">%m&gt;=%</span> <span class="va">y</span></span>
+<span></span>
+<span><span class="va">x</span> <span class="op">%m&lt;=%</span> <span class="va">y</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -98,6 +110,12 @@ with <code>XXX</code> replaced by the corresponding element-wise binary operator
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  -11  -29  -47  -65</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   -2   -2   -2   -2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   13   31   49   67</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span> <span class="op">%m&gt;=%</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="fl">3</span><span class="op">:</span><span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] FALSE FALSE TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] FALSE  TRUE TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]  TRUE  TRUE TRUE</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
