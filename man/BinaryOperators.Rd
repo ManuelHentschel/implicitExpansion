@@ -6,6 +6,12 @@
 \alias{\%m-\%}
 \alias{\%m*\%}
 \alias{\%m/\%}
+\alias{\%m==\%}
+\alias{\%m!=\%}
+\alias{\%m>\%}
+\alias{\%m<\%}
+\alias{\%m>=\%}
+\alias{\%m<=\%}
 \title{Binary Operators with Implicit Expansion}
 \usage{
 x \%m+\% y
@@ -15,6 +21,18 @@ x \%m-\% y
 x \%m*\% y
 
 x \%m/\% y
+
+x \%m==\% y
+
+x \%m!=\% y
+
+x \%m>\% y
+
+x \%m<\% y
+
+x \%m>=\% y
+
+x \%m<=\% y
 }
 \arguments{
 \item{x, y}{Arrays or objects that can be coerced to arrays using \code{\link[=as.array]{as.array()}}.}
@@ -36,6 +54,8 @@ x \%m+\% y
 m <- matrix(3*(1:12)^2, 3, 4)
 cm <- t(colMeans(m))
 m \%m-\% cm
+
+(1:3) \%m>=\% t(3:1)
 
 }
 \seealso{
