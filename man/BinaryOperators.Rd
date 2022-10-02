@@ -6,6 +6,7 @@
 \alias{\%m-\%}
 \alias{\%m*\%}
 \alias{\%m/\%}
+\alias{\%m^\%}
 \alias{\%m==\%}
 \alias{\%m!=\%}
 \alias{\%m>\%}
@@ -21,6 +22,8 @@ x \%m-\% y
 x \%m*\% y
 
 x \%m/\% y
+
+x \%m^\% y
 
 x \%m==\% y
 
