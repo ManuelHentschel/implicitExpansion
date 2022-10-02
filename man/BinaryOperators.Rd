@@ -13,6 +13,8 @@
 \alias{\%m<\%}
 \alias{\%m>=\%}
 \alias{\%m<=\%}
+\alias{\%m|\%}
+\alias{\%m&\%}
 \title{Binary Operators with Implicit Expansion}
 \usage{
 x \%m+\% y
@@ -36,6 +38,10 @@ x \%m<\% y
 x \%m>=\% y
 
 x \%m<=\% y
+
+x \%m|\% y
+
+x \%m&\% y
 }
 \arguments{
 \item{x, y}{Arrays or objects that can be coerced to arrays using \code{\link[=as.array]{as.array()}}.}

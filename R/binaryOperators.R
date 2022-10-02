@@ -92,4 +92,16 @@
     mmapply(`<=`, x, y)
 }
 
+#' @rdname BinaryOperators
+#' @export
+`%m|%` <- function(x, y){
+    mmapply(`|`, x, y)
+}
+
+#' @rdname BinaryOperators
+#' @export
+`%m&%` <- function(x, y){
+    mmapply(`&`, x, y)
+}
+
 
